@@ -1,79 +1,87 @@
-## Projeto desenvolvido no curso de Laravel Eloquent
+# Project Manager (Laravel 11)
 
-Desenvolvido no curso de Laravel Eloquent
+A simple project manager built during the TreinaWeb Laravel Eloquent course. The stack relies on Docker to provide a reproducible environment with PHP 8.2, Nginx, MySQL 8, and Redis.
 
-### Instalando o projeto
+## Features
 
-#### Clonar o repositório
+- CRUD of clients, projects, and employees (course material).
+- Laravel 11 with Telescope, Redis cache/session, and queue worker container.
+- Docker Compose setup for local development (PHP-FPM + Nginx + MySQL + Redis).
 
-```
-git clone https://github.com/luizsantos85/gerenciador-projetos.git
-```
+## Requirements
 
-## Configurações / Requisitos
+- Docker and Docker Compose
+- Git
 
--   **[nginx:alpine]**
--   **[mysql:8.0](https://www.mysql.com/)**
--   **[redis]**
--   **[Laravel:11](https://laravel.com/)**
--   **[PHP:8.2\*](https://www.php.net/manual/pt_BR/index.php)**
--   **[docker]**
+## Getting Started
 
-## Instalar App Usando docker
+1. Clone the repository
+   ```bash
+   git clone https://github.com/luizsantos85/gerenciador-projetos.git
+   cd gerenciador-projetos
+   ```
+2. Create the environment file
+   ```bash
+   cp .env.example .env
+   # adjust DB username/password/ports if necessary
+   ```
+3. Start the containers
+   ```bash
+   docker compose up -d
+   ```
+4. Install dependencies inside the app container
+   ```bash
+   docker compose exec app composer install
+   ```
+5. Generate the application key
+   ```bash
+   docker compose exec app php artisan key:generate
+   ```
+6. Run migrations (and optional seeders)
+   ```bash
+   docker compose exec app php artisan migrate --seed
+   ```
+7. Access the application at `http://localhost:8000`.
+
+### Services exposed
+
+| Service | Image         | Host Port | Notes                               |
+| ------- | ------------- | --------- | ----------------------------------- |
+| app     | custom PHP    | —         | PHP-FPM container used via Nginx.    |
+| nginx   | nginx:alpine  | 8000      | Serves the Laravel app.             |
+| mysql   | mysql:8.0     | 3307      | Data stored under `.docker/mysql`.   |
+| redis   | redis:latest  | 6379*     | Used for cache, sessions, queues.    |
+| queue   | custom PHP    | —         | Runs `php artisan queue:work`.      |
+
+\* Exposed only inside the Docker network, not on the host.
+
+### Useful commands
+
+| Command                                      | Purpose                                   |
+| -------------------------------------------- | ----------------------------------------- |
+| `docker compose ps`                          | List running containers.                  |
+| `docker compose logs -f app`                 | Follow PHP logs.                          |
+| `docker compose exec app bash`               | Open an interactive shell.                |
+| `docker compose down -v`                     | Stop everything and remove volumes.       |
+| `docker compose exec app php artisan queue:work` | Run queues manually (when needed).   |
+
+### Troubleshooting
+
+- **Slow Artisan commands**: ensure the `mysql` container is running before executing Artisan; disable Telescope (`TELESCOPE_ENABLED=false`) if you don't need it during setup.
+- **Database access**: update `.env` with the same credentials defined in `docker-compose.yml` (`DB_HOST=mysql`, `DB_PORT=3306`, etc.).
+- **Queue container flooding logs**: stop the `queue` service (`docker compose stop queue`) until you configure Redis/DB.
+
+## Development Scripts (Host)
+
+For users preferring a native PHP setup:
 
 ```bash
-$ git clone https://github.com/luizsantos85/capacitacao-tms.git
-
-**observar as configurações de portas e usuario no arquivo docker-composer.yml
-
-**Copiar o .env.example e gerar o .env, fazer as modificações das portas (se necessário) e usuario do DB
-
-**Inicializar os containers
-$ docker compose up -d
-
-**será criada uma pasta .docker/mysql para os arquivos de banco de dados
-
-**Acessar o container do laravel
-$ docker compose exec app bash
-
-**Instalar os packges do laravel
-$ composer install
-
-**Gerar a key do laravel
-$ php artisan key:generate
-
-**Gerar as migrations do banco
-$ php artisan migrate
-
-**acessar localhost:8000 para acessar o sistema
-**Acessar phpmyadmin localhost:8080 (user: mesmo definido no env, senha: mesma definida no env)
-```
-
-#### Instalar as depencências
-
-```
 composer install
-```
-
-Ou em ambiente de desenvolvimento:
-
-```
-composer update
-```
-
-#### Criar arquivo de configurações de ambiente
-
-Copiar o arquivo de exemplo `.env.example` para `.env` na raiz do projeto
-configurar os detalhes da aplicação e conexão com o banco de dados.
-
-#### Criar a estrutura no banco de dados
-
-```
+php artisan key:generate
 php artisan migrate
-```
-
-#### Iniciar o servidor de desenvolvimento
-
-```
 php artisan serve
 ```
+
+## License
+
+This project is open-sourced software licensed under the [MIT license](LICENSE).
