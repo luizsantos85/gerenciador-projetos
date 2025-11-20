@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
-use App\Http\Controllers\SiteController;
-use App\Http\Controllers\VerServicos;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,11 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
-// Route::get('home', [SiteController::class, 'home']);
-// Route::get('contato', [SiteController::class, 'contato']);
-// Route::get('sobre', [SiteController::class, 'sobre']);
-// Route::get('servico/{codigo?}', VerServicos::class);
 
 Route::get('clientes', [ClienteController::class, 'index']);
 Route::get('clientes/create', [ClienteController::class, 'create']);

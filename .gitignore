@@ -19,3 +19,5 @@ yarn-error.log
 /.vscode
 composer.lock
 .docker
+node_modules
+package-lock.json
