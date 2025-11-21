@@ -1,5 +1,5 @@
 <x-layout title="Cadastrar Cliente">
-    <form method="post" action="/clientes" class="max-w-6xl mx-auto">
+    {{-- <form method="post" action="{{ route('clients.store') }}" class="max-w-6xl mx-auto">
         @csrf
         <div class="mb-5">
             <label for="nome" class="block mb-2 text-sm font-medium text-gray-900">Nome do cliente</label>
@@ -19,5 +19,7 @@
         <button type="submit"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Cadastrar
             Cliente</button>
-    </form>
+    </form> --}}
+    @include('clientes.form', ['action' => route('clients.store'), 'buttonText' => 'Cadastrar'])
+
 </x-layout>

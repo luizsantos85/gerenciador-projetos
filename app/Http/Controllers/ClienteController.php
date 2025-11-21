@@ -9,14 +9,17 @@ use Illuminate\Http\Request;
 
 class ClienteController extends Controller
 {
+
+    private $itemsPerPage = 10;
+
     /**
      * Lista os clientes do banco de dados
-     * 
-     * @return View|Factory 
+     *
+     * @return View|Factory
      */
     public function index()
     {
-        $clientes = Client::get();
+        $clientes = Client::paginate($this->itemsPerPage);
         $clientes->load('projects');
 
         return view('clientes.index', [
@@ -26,8 +29,8 @@ class ClienteController extends Controller
 
     /**
      * Mostra o formulário de cadastro de clientes
-     * 
-     * @return View|Factory 
+     *
+     * @return View|Factory
      */
     public function create()
     {
@@ -53,6 +56,8 @@ class ClienteController extends Controller
         // $novoCliente->descricao = $request->input('descricao');
         // $novoCliente->save();
 
-        return redirect('/clientes');
+        return redirect()
+            ->route('clients.index')
+            ->with('success', 'Cliente cadastrado com sucesso!');
     }
 }

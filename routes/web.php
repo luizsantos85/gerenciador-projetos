@@ -18,6 +18,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('clientes', [ClienteController::class, 'index']);
-Route::get('clientes/create', [ClienteController::class, 'create']);
-Route::post('clientes', [ClienteController::class, 'store']);
+//Agrupar rotas de clientes
+Route::prefix('clients')->group(function () {
+    Route::get('/', [ClienteController::class, 'index'])->name('clients.index');
+    Route::get('/create', [ClienteController::class, 'create'])->name('clients.create');
+    Route::post('/', [ClienteController::class, 'store'])->name('clients.store');
+});
+
+

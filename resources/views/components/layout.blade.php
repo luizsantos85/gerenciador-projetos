@@ -14,7 +14,7 @@
 
             <ul class="font-medium flex">
                 <li class="px-4">
-                    <a href="/clientes">Cadastro de Clientes</a>
+                    <a href="{{ route('clients.index') }}">Cadastro de Clientes</a>
                 </li>
             </ul>
         </div>
@@ -25,21 +25,16 @@
             {{ $title }}
         </h1>
 
-        {{-- Conteudo da pagina --}}
-        @if ($errors->any())
-        <div class="flex justify-between items-center p-2 bg-red-500 text-white border-2 border-red-500 rounded-sm">
-            <span class="text-xs">Erros de validação</span>
-            <ul class="flex flex-col mt-1">
-                @foreach($errors->all() as $error)
-                <li class="text-sm text-center">{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-        @endif
-        
-        {{ $slot }}
+            {{-- Alerts --}}
+            <x-alerts />
+
+
+            {{-- Conteudo da pagina --}}
+            {{ $slot }}
 
     </div>
+
+    @stack('scripts')
 </body>
 
 </html>

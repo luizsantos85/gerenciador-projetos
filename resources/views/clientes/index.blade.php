@@ -1,6 +1,6 @@
 <x-layout title="Lista de Clientes">
     <div class="flex justify-end my-3">
-        <a class="bg-green-500 border rounded-md p-1 px-3 text-white" href="/clientes/create">Criar cliente</a>
+        <a class="bg-green-500 border rounded-md p-1 px-3 text-white" href="{{ route('clients.create') }}">Criar cliente</a>
     </div>
 
     <div class="relative overflow-x-auto">
@@ -22,7 +22,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($clientes as $cliente)
+                @forelse($clientes as $cliente)
                 <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
                         {{ $cliente->nome }}
@@ -45,8 +45,18 @@
                         @endforelse
                     </td>
                 </tr>
-                @endforeach
+                @empty
+                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                    <td colspan="4" class="px-6 py-4 text-center text-lg">
+                        Nenhum cliente cadastrado.
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
         </table>
+
+        <div class="my-4">
+            {{ $clientes->links() }}
+        </div>
     </div>
 </x-layout>
