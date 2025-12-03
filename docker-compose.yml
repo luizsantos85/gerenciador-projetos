@@ -1,5 +1,3 @@
-version: "3.8" #versão do docker
-
 services: #montagem dos serviços que o docker irá utilizar
     app:
         build:

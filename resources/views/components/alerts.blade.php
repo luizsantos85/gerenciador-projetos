@@ -1,7 +1,5 @@
 @if ($errors->any())
-<div
-    class="alert flex justify-between items-center p-2 bg-red-500 text-white border-2 border-red-500 rounded-sm transition-opacity duration-500">
-    <span class="text-xs">Erros de validação</span>
+<div class="alert flex justify-center items-center p-2 bg-red-500 text-white border-2 border-red-500 rounded-sm transition-opacity duration-500">
     <ul class="flex flex-col mt-1">
         @foreach($errors->all() as $error)
         <li class="text-sm text-center">{{ $error }}</li>
