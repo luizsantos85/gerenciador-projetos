@@ -1,3 +1,3 @@
 <x-layout title="Cadastrar Cliente">
-    @include('clientes.form', ['action' => route('clients.store'), 'buttonText' => 'Cadastrar'])
+    @include('clientes.form', ['action' => route('clients.store'), 'btnText' => 'Cadastrar Cliente'])
 </x-layout>
