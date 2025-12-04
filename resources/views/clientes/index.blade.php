@@ -19,6 +19,9 @@
                     <th scope="col" class="px-6 py-3">
                         Projetos
                     </th>
+                    <th scope="col" class="px-6 py-3">
+                        Ações
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -43,6 +46,10 @@
                         @empty
                         Nenhum projeto
                         @endforelse
+                    </td>
+                    <td class="px-6 py-4">
+                        <a href="{{route('clients.edit', $cliente->id)}}">Editar</a>
+                        <a href="">Excluir</a>
                     </td>
                 </tr>
                 @empty

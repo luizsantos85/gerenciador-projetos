@@ -60,4 +60,24 @@ class ClienteController extends Controller
             ->route('clients.index')
             ->with('success', 'Cliente cadastrado com sucesso!');
     }
+
+    public function edit(Client $client): View
+    {
+        return view('clientes.edit', compact('client'));
+    }
+
+    public function update(Request $request, Client $client)
+    {
+        $request->validate([
+            'nome' => ['required', 'min:3', 'max:100'],
+            'endereco' => ['required', 'max:200'],
+            'descricao' => ['required']
+        ]);
+
+        $client->update($request->except('_token', '_method'));
+
+        return redirect()
+            ->route('clients.index')
+            ->with('success', 'Cliente atualizado com sucesso!');
+    }
 }

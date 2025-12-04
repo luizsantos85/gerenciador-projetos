@@ -23,6 +23,9 @@ Route::prefix('clients')->group(function () {
     Route::get('/', [ClienteController::class, 'index'])->name('clients.index');
     Route::get('/create', [ClienteController::class, 'create'])->name('clients.create');
     Route::post('/', [ClienteController::class, 'store'])->name('clients.store');
+    Route::get('/{client}/edit', [ClienteController::class, 'edit'])->name('clients.edit');
+    Route::put('/{client}', [ClienteController::class, 'update'])->name('clients.update');
+
 });
 
 
