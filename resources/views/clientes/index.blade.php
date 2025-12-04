@@ -48,8 +48,16 @@
                         @endforelse
                     </td>
                     <td class="px-6 py-4">
-                        <a href="{{route('clients.edit', $cliente->id)}}">Editar</a>
-                        <a href="">Excluir</a>
+                        <a href="{{ route('clients.edit', $cliente->id) }}" class="mr-3 text-blue-600 hover:underline">Editar</a>
+
+                        <form action="{{ route('clients.destroy', $cliente->id) }}" method="POST" class="inline">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="text-red-600 hover:underline"
+                                onclick="return confirm('Are you sure you want to delete this client?')">
+                                Excluir
+                            </button>
+                        </form>
                     </td>
                 </tr>
                 @empty

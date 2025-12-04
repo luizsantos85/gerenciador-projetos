@@ -80,4 +80,13 @@ class ClienteController extends Controller
             ->route('clients.index')
             ->with('success', 'Cliente atualizado com sucesso!');
     }
+
+    public function destroy(Client $client)
+    {
+        $client->delete();
+
+        return redirect()
+            ->route('clients.index')
+            ->with('success', 'Cliente excluído com sucesso!');
+    }
 }
