@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUpdateClientRequest;
 use App\Models\Client;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
@@ -40,21 +41,10 @@ class ClienteController extends Controller
     /**
      * Grava o cliente no banco de dados
      */
-    public function store(Request $request)
+    public function store(StoreUpdateClientRequest $request)
     {
-        $request->validate([
-            'nome' => ['required', 'min:3', 'max:100'],
-            'endereco' => ['required', 'max:200'],
-            'descricao' => ['required']
-        ]);
-
-        Client::create($request->except('_token'));
-
-        // $novoCliente = new Client;
-        // $novoCliente->nome = $request->input('nome');
-        // $novoCliente->endereco = $request->input('endereco');
-        // $novoCliente->descricao = $request->input('descricao');
-        // $novoCliente->save();
+        $data = $request->validated();
+        Client::create($data);
 
         return redirect()
             ->route('clients.index')
@@ -66,15 +56,10 @@ class ClienteController extends Controller
         return view('clientes.edit', compact('client'));
     }
 
-    public function update(Request $request, Client $client)
+    public function update(StoreUpdateClientRequest $request, Client $client)
     {
-        $request->validate([
-            'nome' => ['required', 'min:3', 'max:100'],
-            'endereco' => ['required', 'max:200'],
-            'descricao' => ['required']
-        ]);
-
-        $client->update($request->except('_token', '_method'));
+        $data = $request->validated();
+        $client->update($data);
 
         return redirect()
             ->route('clients.index')
