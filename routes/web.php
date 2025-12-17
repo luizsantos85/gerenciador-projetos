@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\EmployeeController;
+use App\Models\Employee;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,5 +29,7 @@ Route::prefix('clients')->group(function () {
     Route::put('/{client}', [ClienteController::class, 'update'])->name('clients.update');
     Route::delete('/{client}', [ClienteController::class, 'destroy'])->name('clients.destroy');
 });
+
+Route::resource('employees', EmployeeController::class);
 
 

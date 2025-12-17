@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreUpdateClientRequest;
 use App\Models\Client;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\Request;
+use App\Http\Requests\StoreUpdateClientRequest;
 
 class ClienteController extends Controller
 {
@@ -40,6 +40,8 @@ class ClienteController extends Controller
 
     /**
      * Grava o cliente no banco de dados
+     * @param StoreUpdateClientRequest $request
+     * @return RedirectResponse
      */
     public function store(StoreUpdateClientRequest $request)
     {
@@ -51,11 +53,24 @@ class ClienteController extends Controller
             ->with('success', 'Cliente cadastrado com sucesso!');
     }
 
+    /**
+     * Tela de edição com os dados do cliente
+     *
+     * @param Client $client
+     * @return View
+     */
     public function edit(Client $client): View
     {
         return view('clientes.edit', compact('client'));
     }
 
+    /**
+     * Atualiza clientes
+     *
+     * @param StoreUpdateClientRequest $request
+     * @param Client $client
+     * @return RedirectResponse
+     */
     public function update(StoreUpdateClientRequest $request, Client $client)
     {
         $data = $request->validated();
@@ -66,6 +81,12 @@ class ClienteController extends Controller
             ->with('success', 'Cliente atualizado com sucesso!');
     }
 
+    /**
+     * Deleta clientes
+     *
+     * @param Client $client
+     * @return RedirectResponse
+     */
     public function destroy(Client $client)
     {
         $client->delete();

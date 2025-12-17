@@ -6,9 +6,9 @@
 
     @csrf
 
-    <x-input-text nomeInput="nome" :value="$client->nome ?? ''" />
-    <x-input-text nomeInput="endereco" :value="$client->endereco ?? ''" />
-    <x-input-text nomeInput="descricao" :value="$client->descricao ?? ''" />
+    <x-input-text name="nome" label="Nome" :value="$client->nome ?? ''" />
+    <x-input-text name="endereco" label="Endereço" :value="$client->endereco ?? ''" />
+    <x-input-text name="descricao" label="Descrição" :value="$client->descricao ?? ''" />
 
     <x-button-simple buttonText="{{$btnText}}" />
 </form>
