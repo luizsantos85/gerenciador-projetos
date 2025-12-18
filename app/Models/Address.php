@@ -15,11 +15,20 @@ class Address extends Model
     /**
      * Mapeia o relacionamento com funcionário
      * Um endereço pertence a um funcionário
-     * 
-     * @return BelongsTo 
+     *
+     * @return BelongsTo
      */
     public function employee()
     {
         return $this->belongsTo(Employee::class);
     }
+
+    /**
+     * Retorna o endereço do empregado formatado
+     */
+    public function formattedAddress()
+    {
+        return "{$this->logradouro} - {$this->numero}, {$this->bairro}, {$this->cidade}/{$this->estado}, CEP: {$this->cep}";
+    }
+
 }

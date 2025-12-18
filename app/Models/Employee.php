@@ -11,15 +11,19 @@ class Employee extends Model
 {
     use HasFactory;
 
+    // O  metodo fillable permite que os campos (nome, cpf, data_contratacao, data_demissao) sejam modificados
+    // This property is used by the mass assignment protection to determine which attributes should be mass assignable.
     //protected $fillable = ['nome', 'cpf', 'data_contratacao', 'data_demissao'];
 
+    // O  metodo guarded evita que os campos (id, created_at, updated_at) sejam modificados
+    // This property is used by the mass assignment protection to determine which attributes should not be mass assignable.
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     /**
      * Mapeia o relacionamento com o endereço
      * Um funcionário tem um endereço
-     * 
-     * @return HasOne 
+     *
+     * @return HasOne
      */
     public function address()
     {
@@ -28,8 +32,8 @@ class Employee extends Model
 
     /**
      * Um funcionário pertence a muitos projetos
-     * 
-     * @return BelongsToMany 
+     *
+     * @return BelongsToMany
      */
     public function projects()
     {
