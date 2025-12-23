@@ -32,8 +32,9 @@ class StoreUpdateEmployeeRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('employees.update');
-
+        $employee = $this->route('employee');
+        $id = $employee?->id ?? $employee;
+        
         return [
             'nome' => 'required|string|min:2|max:100',
             'cpf' => 'required|string|digits:11|unique:employees,cpf,' . $id,

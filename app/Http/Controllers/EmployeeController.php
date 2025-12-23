@@ -85,15 +85,49 @@ class EmployeeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $employee = Employee::with('address')->findOrFail($id);
+        return view('employees.edit', [
+            'employee' => $employee
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreUpdateEmployeeRequest $request, Employee $employee)
     {
-        //
+        $data = $request->only([
+            'nome',
+            'cpf',
+            'data_contratacao',
+            'data_demissao',
+        ]);
+        $address = $request->only([
+            'logradouro',
+            'numero',
+            'bairro',
+            'complemento',
+            'cidade',
+            'estado',
+            'cep',
+        ]);
+
+        try {
+            DB::beginTransaction();
+                $employee->update($data);
+                $employee->address->update($address);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return redirect()->back()
+                ->withInput()
+                ->with('error', 'Erro ao atualizar funcionario!');
+        }
+
+        return redirect()
+            ->route('employees.index')
+            ->with('success', 'Funcionario atualizado com sucesso!');
     }
 
     /**

@@ -1,7 +1,7 @@
 {{-- Formulario para reaproveitar na criação e update de funcionarios --}}
 <form method="post" action="{{ $action }}" class="max-w-6xl mx-auto">
     @if(isset($employee))
-    @method('PUT')
+        @method('PUT')
     @endif
 
     @csrf
@@ -23,25 +23,25 @@
         <legend class="font-bold">Endereço</legend>
         <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
             <div class="md:col-span-10">
-                <x-input-text name="logradouro" label="Logradouro" :value="$employee->logradouro ?? ''" />
+                <x-input-text name="logradouro" label="Logradouro" :value="$employee->address->logradouro ?? ''" />
             </div>
             <div class="md:col-span-2">
-                <x-input-text name="numero" label="Número" :value="$employee->numero ?? ''" />
+                <x-input-text name="numero" label="Número" :value="$employee->address->numero ?? ''" />
             </div>
             <div class="md:col-span-6">
-                <x-input-text name="bairro" label="Bairro" :value="$employee->bairro ?? ''" />
+                <x-input-text name="bairro" label="Bairro" :value="$employee->address->bairro ?? ''" />
             </div>
             <div class="md:col-span-6">
-                <x-input-text name="complemento" label="Complemento" :value="$employee->complemento ?? ''" />
+                <x-input-text name="complemento" label="Complemento" :value="$employee->address->complemento ?? ''" />
             </div>
             <div class="md:col-span-7">
-                <x-input-text name="cidade" label="Cidade" :value="$employee->cidade ?? ''" />
+                <x-input-text name="cidade" label="Cidade" :value="$employee->address->cidade ?? ''" />
             </div>
             <div class="md:col-span-2">
-                <x-input-text name="estado" label="Estado" :value="$employee->estado ?? ''" />
+                <x-input-text name="estado" label="Estado" :value="$employee->address->estado ?? ''" />
             </div>
             <div class="md:col-span-3">
-                <x-input-text name="cep" label="CEP" :value="$employee->cep ?? ''" />
+                <x-input-text name="cep" label="CEP" :value="$employee->address->cep ?? ''" />
             </div>
         </div>
     </fieldset>
