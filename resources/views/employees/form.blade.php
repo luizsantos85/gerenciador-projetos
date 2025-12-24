@@ -9,9 +9,9 @@
         <legend class="font-bold">Dados básicos</legend>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="md:col-span-3">
-                <x-input-text name="nome" label="Nome" :value="$employee->nome ?? ''" />
+                <x-input-text name="nome" label="Nome" :value="$employee->nome ?? ''" minlength="2" maxlength="100"/>
             </div>
-            <x-input-text name="cpf" label="CPF" :value="$employee->cpf ?? ''" />
+            <x-input-text name="cpf" label="CPF" :value="$employee->cpf ?? ''" maxlength="11"/>
             <x-input-text name="data_contratacao" label="Data de contratação" :value="$employee->data_contratacao ?? ''"
                 type="date" />
             <x-input-text name="data_demissao" label="Data de demissão" :value="$employee->data_demissao ?? ''"
@@ -41,7 +41,7 @@
                 <x-input-text name="estado" label="Estado" :value="$employee->address->estado ?? ''" />
             </div>
             <div class="md:col-span-3">
-                <x-input-text name="cep" label="CEP" :value="$employee->address->cep ?? ''" />
+                <x-input-text name="cep" label="CEP" :value="$employee->address->cep ?? ''" maxlength="8"/>
             </div>
         </div>
     </fieldset>

@@ -55,6 +55,10 @@
                 @endforelse
             </tbody>
         </table>
+
+        <div class="my-4">
+            {{ $employees->links() }}
+        </div>
     </div>
 
 </x-layout>

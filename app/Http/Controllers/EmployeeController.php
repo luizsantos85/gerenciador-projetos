@@ -4,20 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUpdateEmployeeRequest;
 use App\Models\Employee;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Services\Employee\EmployeeService;
+
 
 class EmployeeController extends Controller
 {
 
     private $itemsPerPage = 10;
 
+    public function __construct(private EmployeeService $employeeService) {}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $employees = Employee::with('address')->paginate($this->itemsPerPage);
+        $employees = Employee::with('address')
+            ->orderBy('created_at', 'desc')
+            ->paginate($this->itemsPerPage);
+
         return view('employees.index', [
             'employees' => $employees
         ]);
@@ -36,32 +41,12 @@ class EmployeeController extends Controller
      */
     public function store(StoreUpdateEmployeeRequest $request)
     {
-        //Trabalhar com transações e try catch
-        try {
-            $data = $request->only([
-                'nome',
-                'cpf',
-                'data_contratacao',
-                'data_demissao',
-            ]);
+        $data = $request->employeeData();
+        $address = $request->addressData();
 
-            $address = $request->only([
-                'logradouro',
-                'numero',
-                'bairro',
-                'complemento',
-                'cidade',
-                'estado',
-                'cep',
-            ]);
+        $response = $this->employeeService->insertEmployee($data, $address);
 
-            DB::beginTransaction();
-                $employee = Employee::create($data);
-                $employee->address()->create($address);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
-
+        if (!$response) {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erro ao cadastrar funcionario!');
@@ -83,9 +68,8 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Employee $employee)
     {
-        $employee = Employee::with('address')->findOrFail($id);
         return view('employees.edit', [
             'employee' => $employee
         ]);
@@ -96,30 +80,12 @@ class EmployeeController extends Controller
      */
     public function update(StoreUpdateEmployeeRequest $request, Employee $employee)
     {
-        $data = $request->only([
-            'nome',
-            'cpf',
-            'data_contratacao',
-            'data_demissao',
-        ]);
-        $address = $request->only([
-            'logradouro',
-            'numero',
-            'bairro',
-            'complemento',
-            'cidade',
-            'estado',
-            'cep',
-        ]);
+        $data = $request->employeeData();
+        $address = $request->addressData();
 
-        try {
-            DB::beginTransaction();
-                $employee->update($data);
-                $employee->address->update($address);
-            DB::commit();
-        } catch (\Exception $e) {
-            DB::rollBack();
+        $response = $this->employeeService->updateEmployee($employee, $data, $address);
 
+        if (!$response) {
             return redirect()->back()
                 ->withInput()
                 ->with('error', 'Erro ao atualizar funcionario!');
