@@ -49,4 +49,26 @@ class EmployeeService
         }
         return true;
     }
+
+    /**
+     * Delete employee
+     *
+     * @param Employee $employee
+     * @return boolean
+     */
+    public function deleteEmployee(Employee $employee): bool
+    {
+        try {
+            DB::beginTransaction();
+
+            $employee->address()->delete();
+            $employee->delete();
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
+        }
+        return true;
+    }
 }

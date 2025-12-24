@@ -99,8 +99,17 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Employee $employee)
     {
-        //
+        $response = $this->employeeService->deleteEmployee($employee);
+
+        if (!$response) {
+            return redirect()->back()
+                ->with('error', 'Erro ao excluir funcionario!');
+        }
+
+        return redirect()
+            ->route('employees.index')
+            ->with('success', 'Funcionario excluido com sucesso!');
     }
 }
