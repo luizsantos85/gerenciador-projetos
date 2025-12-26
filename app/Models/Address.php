@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,9 +27,13 @@ class Address extends Model
     /**
      * Retorna o endereço do empregado formatado
      */
-    public function formattedAddress()
+    protected function formattedAddress(): Attribute
     {
-        return "{$this->logradouro} - {$this->numero}, {$this->bairro}, {$this->cidade}/{$this->estado}, CEP: {$this->cep}";
+        return Attribute::make(
+            get: fn () => "{$this->logradouro} - {$this->numero}, {$this->bairro}, {$this->cidade}/{$this->estado} CEP: {$this->cep}"
+            .  ($this->complemento ? " ({$this->complemento})" : ''),
+        );
+        // return "{$this->logradouro} - {$this->numero}, {$this->bairro}, {$this->cidade}/{$this->estado}, CEP: {$this->cep}";
     }
 
 }

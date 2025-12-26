@@ -31,7 +31,7 @@
                         {{ $employee->cpf }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $employee->address?->formattedAddress() ?? 'Endereço não informado' }}
+                        {{ $employee->address?->formattedAddress ?? 'Endereço não informado' }}
                     </td>
                     <td class="px-6 py-4 w-36 sticky right-0 bg-white dark:bg-gray-800 z-10 whitespace-nowrap">
                         <a href="{{route('employees.edit', $employee->id)}}" class="mr-2 bg-blue-500 text-white p-1 border rounded-md hover:bg-blue-700">Editar</a>
