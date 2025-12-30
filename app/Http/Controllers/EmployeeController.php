@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\StatesOfBrazilian;
 use App\Http\Requests\StoreUpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Services\Employee\EmployeeService;
@@ -33,7 +34,8 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        return view('employees.create');
+        $states = StatesOfBrazilian::cases(); // return list with all states
+        return view('employees.create', compact('states'));
     }
 
     /**
@@ -44,12 +46,13 @@ class EmployeeController extends Controller
         $data = $request->employeeData();
         $address = $request->addressData();
 
-        $response = $this->employeeService->insertEmployee($data, $address);
+        $result = $this->employeeService->insertEmployee($data, $address);
 
-        if (!$response) {
-            return redirect()->back()
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
                 ->withInput()
-                ->with('error', 'Erro ao cadastrar funcionario!');
+                ->with('error', 'Erro ao cadastrar funcionário: ' . $result['message']);
         }
 
         return redirect()
@@ -70,8 +73,10 @@ class EmployeeController extends Controller
      */
     public function edit(Employee $employee)
     {
+        $states = StatesOfBrazilian::cases(); // return list with all states
         return view('employees.edit', [
-            'employee' => $employee
+            'employee' => $employee,
+            'states' => $states
         ]);
     }
 
@@ -83,12 +88,13 @@ class EmployeeController extends Controller
         $data = $request->employeeData();
         $address = $request->addressData();
 
-        $response = $this->employeeService->updateEmployee($employee, $data, $address);
+        $result = $this->employeeService->updateEmployee($employee, $data, $address);
 
-        if (!$response) {
-            return redirect()->back()
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
                 ->withInput()
-                ->with('error', 'Erro ao atualizar funcionario!');
+                ->with('error', 'Erro ao atualizar funcionário: ' . $result['message']);
         }
 
         return redirect()
@@ -101,11 +107,12 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
-        $response = $this->employeeService->deleteEmployee($employee);
+        $result = $this->employeeService->deleteEmployee($employee);
 
-        if (!$response) {
-            return redirect()->back()
-                ->with('error', 'Erro ao excluir funcionario!');
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
+                ->with('error', 'Erro ao atualizar funcionário: ' . $result['message']);
         }
 
         return redirect()

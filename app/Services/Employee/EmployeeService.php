@@ -12,20 +12,28 @@ class EmployeeService
      *
      * @param array $data
      * @param array $address
-     * @return boolean
+     * @return array
      */
-    public function insertEmployee(array $data, array $address): bool
+    public function insertEmployee(array $data, array $address): array
     {
         try {
             DB::beginTransaction();
             $employee = Employee::create($data);
             $employee->address()->create($address);
             DB::commit();
+
+            return ['ok' => true, 'employee' => $employee];
         } catch (\Exception $e) {
             DB::rollBack();
-            return false;
+            // Log::error('Employee insert failed', [
+            //     'error' => $e->getMessage(),
+            //     'data' => $data,           // remova se não quiser logar PII
+            //     'address' => $address,     // idem
+            //     'trace' => $e->getTraceAsString(),
+            // ]);
+
+            return ['ok' => false, 'message' => $e->getMessage()];
         }
-        return true;
     }
 
     /**
@@ -34,29 +42,30 @@ class EmployeeService
      * @param Employee $employee
      * @param array $data
      * @param array $address
-     * @return boolean
+     * @return array
      */
-    public function updateEmployee(Employee $employee, array $data, array $address): bool
+    public function updateEmployee(Employee $employee, array $data, array $address): array
     {
         try {
             DB::beginTransaction();
             $employee->update($data);
             $employee->address()->updateOrCreate([], $address);
             DB::commit();
+
+            return ['ok' => true, 'employee' => $employee];
         } catch (\Exception $e) {
             DB::rollBack();
-            return false;
+            return ['ok' => false, 'message' => $e->getMessage()];
         }
-        return true;
     }
 
     /**
      * Delete employee
      *
      * @param Employee $employee
-     * @return boolean
+     * @return array
      */
-    public function deleteEmployee(Employee $employee): bool
+    public function deleteEmployee(Employee $employee): array
     {
         try {
             DB::beginTransaction();
@@ -65,10 +74,10 @@ class EmployeeService
             $employee->delete();
 
             DB::commit();
+            return ['ok' => true, 'employee' => $employee];
         } catch (\Exception $e) {
             DB::rollBack();
-            return false;
+            return ['ok' => false, 'message' => $e->getMessage()];
         }
-        return true;
     }
 }

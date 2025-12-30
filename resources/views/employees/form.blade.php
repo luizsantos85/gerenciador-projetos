@@ -38,7 +38,7 @@
                 <x-input-text name="cidade" label="Cidade" :value="$employee->address->cidade ?? ''" />
             </div>
             <div class="md:col-span-2">
-                <x-input-text name="estado" label="Estado" :value="$employee->address->estado ?? ''" />
+                <x-select name="estado" label="UF" :list="$states" :value="$employee->address->estado ?? ''"/>
             </div>
             <div class="md:col-span-3">
                 <x-input-text name="cep" label="CEP" :value="$employee->address->cep ?? ''" maxlength="8"/>
