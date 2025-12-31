@@ -16,6 +16,7 @@ class StoreUpdateEmployeeRequest extends FormRequest
 
     /**
      * Prepare the data for validation.
+     * Remove the mask from the cpf and cep fields
      */
     protected function prepareForValidation()
     {
@@ -34,12 +35,13 @@ class StoreUpdateEmployeeRequest extends FormRequest
     {
         $employee = $this->route('employee');
         $id = $employee?->id ?? $employee;
+        $today = now('America/Sao_Paulo')->toDateString();
 
         return [
             'nome' => 'required|string|min:2|max:100',
             'cpf' => 'required|string|digits:11|unique:employees,cpf,' . $id,
-            'data_contratacao' => 'required|date',
-            'data_demissao' => 'nullable|date',
+            'data_contratacao' => 'required|date|before_or_equal:' . $today,
+            'data_demissao' => 'nullable|date|before_or_equal:' . $today,
             // Endereço
             'logradouro' => 'required|string|max:255|min:2',
             'numero' => 'required|string|max:20',

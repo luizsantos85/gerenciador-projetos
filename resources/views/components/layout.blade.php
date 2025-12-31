@@ -27,14 +27,11 @@
         <h1 class="text-4xl font-bold text-center my-4">
             {{ $title }}
         </h1>
+        {{-- Alerts --}}
+        <x-alerts />
 
-            {{-- Alerts --}}
-            <x-alerts />
-
-
-            {{-- Conteudo da pagina --}}
-            {{ $slot }}
-
+        {{-- Conteudo da pagina --}}
+        {{ $slot }}
     </div>
 
     @stack('scripts')
