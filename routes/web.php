@@ -30,6 +30,6 @@ Route::prefix('clients')->group(function () {
     Route::delete('/{client}', [ClienteController::class, 'destroy'])->name('clients.destroy');
 });
 
-Route::resource('employees', EmployeeController::class);
+Route::resource('employees', EmployeeController::class)->except(['show']);
 
 

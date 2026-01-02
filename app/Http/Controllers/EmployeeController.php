@@ -60,13 +60,6 @@ class EmployeeController extends Controller
             ->with('success', 'Funcionario cadastrado com sucesso!');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
