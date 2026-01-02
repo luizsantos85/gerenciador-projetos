@@ -40,8 +40,8 @@ class StoreUpdateEmployeeRequest extends FormRequest
         return [
             'nome' => 'required|string|min:2|max:100',
             'cpf' => 'required|string|digits:11|unique:employees,cpf,' . $id,
-            'data_contratacao' => 'required|date|before_or_equal:' . $today,
-            'data_demissao' => 'nullable|date|before_or_equal:' . $today,
+            'data_contratacao' => 'required|date|date_format:Y-m-d|after_or_equal:1900-01-01|before_or_equal:' . $today,
+            'data_demissao' => 'nullable|date|after_or_equal:data_contratacao|before_or_equal:' . $today,
             // Endereço
             'logradouro' => 'required|string|max:255|min:2',
             'numero' => 'required|string|max:20',
