@@ -67,8 +67,15 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Employee $employee): View|Factory
+    public function edit(Employee $employee): View|Factory|RedirectResponse|Redirector
     {
+        if ($employee->data_demissao) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Funcionario demitido, não pode ser atualizado!');
+        }
+
         $states = StatesOfBrazilian::cases(); // return list with all states
         return view('employees.edit', [
             'employee' => $employee,
@@ -81,6 +88,13 @@ class EmployeeController extends Controller
      */
     public function update(StoreUpdateEmployeeRequest $request, Employee $employee): RedirectResponse|Redirector
     {
+        if($employee->data_demissao) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Funcionario demitido, não pode ser atualizado!');
+        }
+
         $data = $request->employeeData();
         $address = $request->addressData();
 
@@ -114,5 +128,39 @@ class EmployeeController extends Controller
         return redirect()
             ->route('employees.index')
             ->with('success', 'Funcionario excluido com sucesso!');
+    }
+
+    /**
+     * Fire an employee
+     */
+    public function fireAnEmployee(Employee $employee): RedirectResponse|Redirector
+    {
+        $result = $this->employeeService->fireEmployee($employee);
+
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
+                ->with('error', 'Erro ao demitir funcionário: ' . $result['message']);
+        }
+
+        return redirect()
+            ->route('employees.index')
+            ->with('success', 'Funcionario demitido com sucesso!');
+    }
+
+    /**Reissue employee */
+    public function reissueEmployee(Employee $employee): RedirectResponse|Redirector
+    {
+        $result = $this->employeeService->reissueEmployee($employee);
+
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
+                ->with('error', 'Erro ao reativar funcionário: ' . $result['message']);
+        }
+
+        return redirect()
+            ->route('employees.index')
+            ->with('success', 'Funcionario reativado com sucesso!');
     }
 }

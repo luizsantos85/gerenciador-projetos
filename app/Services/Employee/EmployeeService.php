@@ -80,4 +80,45 @@ class EmployeeService
             return ['ok' => false, 'message' => $e->getMessage()];
         }
     }
+
+    /**
+     * Fire employee
+     *
+     * @param Employee $employee
+     * @return array{employee: Employee, ok: bool|array{message: string, ok: bool}}
+     */
+    public function fireEmployee(Employee $employee): array
+    {
+        try {
+            DB::beginTransaction();
+            $employee->update([
+                "data_demissao" => now(),
+            ]);
+            DB::commit();
+            return ['ok' => true, 'employee' => $employee];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['ok' => false, 'message' => $e->getMessage()];
+        }
+    }
+
+    /**
+     * Summary of reissueEmployee
+     * @param Employee $employee
+     * @return array{employee: Employee, ok: bool|array{message: string, ok: bool}}
+     */
+    public function reissueEmployee(Employee $employee): array
+    {
+        try {
+            DB::beginTransaction();
+            $employee->update([
+                "data_demissao" => null,
+            ]);
+            DB::commit();
+            return ['ok' => true, 'employee' => $employee];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['ok' => false, 'message' => $e->getMessage()];
+        }
+    }
 }
