@@ -12,8 +12,7 @@
                 <x-input-text name="nome" label="Nome" :value="$employee->nome ?? ''" minlength="2" maxlength="100" />
             </div>
             <x-input-text name="cpf" label="CPF" :value="$employee->cpf ?? ''" data-mask="000.000.000-00" />
-            <x-input-text name="data_contratacao" label="Data de contratação" :value="$employee->data_contratacao ?? ''"
-                type="date" />
+            <x-input-text name="data_contratacao" label="Data de contratação" :value="$employee->data_contratacao ?? ''" type="date" />
             <x-input-text name="data_demissao" label="Data de demissão" :value="$employee->data_demissao ?? ''"
                 type="date" />
         </div>

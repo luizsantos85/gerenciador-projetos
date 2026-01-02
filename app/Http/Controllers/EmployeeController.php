@@ -6,7 +6,10 @@ use App\Enums\StatesOfBrazilian;
 use App\Http\Requests\StoreUpdateEmployeeRequest;
 use App\Models\Employee;
 use App\Services\Employee\EmployeeService;
-
+use Illuminate\Contracts\View\View;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
 
 class EmployeeController extends Controller
 {
@@ -18,7 +21,7 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View|Factory
     {
         $employees = Employee::with('address')
             ->orderBy('created_at', 'desc')
@@ -32,7 +35,7 @@ class EmployeeController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View|Factory
     {
         $states = StatesOfBrazilian::cases(); // return list with all states
         return view('employees.create', compact('states'));
@@ -41,7 +44,7 @@ class EmployeeController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateEmployeeRequest $request)
+    public function store(StoreUpdateEmployeeRequest $request): RedirectResponse|Redirector
     {
         $data = $request->employeeData();
         $address = $request->addressData();
@@ -64,7 +67,7 @@ class EmployeeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Employee $employee)
+    public function edit(Employee $employee): View|Factory
     {
         $states = StatesOfBrazilian::cases(); // return list with all states
         return view('employees.edit', [
@@ -76,7 +79,7 @@ class EmployeeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdateEmployeeRequest $request, Employee $employee)
+    public function update(StoreUpdateEmployeeRequest $request, Employee $employee): RedirectResponse|Redirector
     {
         $data = $request->employeeData();
         $address = $request->addressData();
@@ -98,7 +101,7 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Employee $employee)
+    public function destroy(Employee $employee): RedirectResponse|Redirector
     {
         $result = $this->employeeService->deleteEmployee($employee);
 

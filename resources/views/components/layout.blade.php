@@ -8,6 +8,7 @@
 </head>
 
 <body>
+    {{-- Menu Top Bar --}}
     <x-menu-top-bar />
 
     <div class="container mx-auto">
