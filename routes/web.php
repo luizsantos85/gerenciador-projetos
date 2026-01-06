@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,4 +34,4 @@ Route::resource('employees', EmployeeController::class)->except(['show']);
 Route::patch('/employees/{employee}/fire', [EmployeeController::class, 'fireAnEmployee'])->name('employees.fire');
 Route::patch('/employees/{employee}/reissue', [EmployeeController::class, 'reissueEmployee'])->name('employees.reissue');
 
-
+Route::resource('projects', ProjectController::class);
