@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use App\Models\Project;
+use App\Services\Project\ProjectService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Http\Request;
@@ -12,6 +13,9 @@ class ProjectController extends Controller
 {
 
     private $perPage = 10;
+    public function __construct(private ProjectService $projectService) {}
+
+
     /**
      * Display a listing of the project.
      */
@@ -37,7 +41,21 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->all();
+        $data['orcamento'] = $this->sanitizeMoney($data['orcamento']);
+
+        $result = $this->projectService->insertProject($data);
+
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Erro ao cadastrar projeto: ' . $result['message']);
+        }
+
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Projeto cadastrado com sucesso!');
     }
 
     /**
@@ -59,9 +77,23 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Project $project)
     {
-        //
+        $data = $request->all();
+        $data['orcamento'] = $this->sanitizeMoney($data['orcamento']);
+
+        $result = $this->projectService->updateProject($project, $data);
+
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', 'Erro ao atualizar projeto: ' . $result['message']);
+        }
+
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Projeto atualizado com sucesso!');
     }
 
     /**
@@ -70,5 +102,20 @@ class ProjectController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Sanitize money string to decimal
+     *
+     * @param string|null $value
+     * @return string|null
+     */
+    private function sanitizeMoney(?string $value): ?string
+    {
+        if (!$value) {
+            return null;
+        }
+
+        return str_replace(['R$ ', '.', ','], ['', '', '.'], $value);
     }
 }

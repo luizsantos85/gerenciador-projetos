@@ -22,7 +22,8 @@
             </div>
 
             <div class="md:col-span-2">
-                <x-input-text name="orcamento" label="Orçamento" :value="$project->orcamento ?? ''" type="number" />
+                <x-input-text name="orcamento" label="Orçamento" :value="$project->orcamento ?? ''" type="text"
+                    data-mask="money" />
             </div>
 
             <div class="md:col-span-2">
@@ -36,12 +37,30 @@
 </form>
 
 @push('scripts')
-{{-- <script src="https://unpkg.com/imask"></script>
+<script src="https://unpkg.com/imask"></script>
 <script>
     document.querySelectorAll('[data-mask]').forEach(el => {
-            IMask(el, {
-                mask: el.dataset.mask
-            });
+            const mask = el.dataset.mask;
+
+            if (mask === 'money') {
+                IMask(el, {
+                    mask: 'R$ num',
+                    blocks: {
+                        num: {
+                            mask: Number,
+                            thousandsSeparator: '.',
+                            padFractionalZeros: true,
+                            normalizeZeros: true,
+                            radix: ',',
+                            mapToRadix: ['.']
+                        }
+                    }
+                });
+            } else {
+                IMask(el, {
+                    mask: mask
+                });
+            }
         });
-</script> --}}
+</script>
 @endpush
