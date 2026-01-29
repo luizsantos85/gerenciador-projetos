@@ -1,3 +1,7 @@
+@php
+    use App\Helpers\Functions;
+@endphp
+
 <x-layout title="Lista de Projetos">
     <div class="flex justify-end my-3">
         <a class="bg-green-500 border rounded-md p-1 px-3 text-white" href="{{ route('projects.create') }}">Criar projeto</a>
@@ -31,13 +35,13 @@
                         {{ $project->nome }}
                     </th>
                     <td class="px-6 py-4">
-                        {{ $project->orcamento }}
+                       R$ {{ Functions::formatarMoeda($project->orcamento) }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $project->data_inicio }}
+                        {{ Functions::formatarData($project->data_inicio) }}
                     </td>
                     <td class="px-6 py-4">
-                        {{ $project->data_final }}
+                        {{ Functions::formatarData($project->data_final) }}
                     </td>
                     <td class="px-6 py-4">
                         <a href="{{ route('projects.edit', $project->id) }}" class="mr-2 bg-blue-500 text-white p-1 border rounded-md hover:bg-blue-700">Editar</a>

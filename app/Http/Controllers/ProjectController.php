@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUpdateProjectRequest;
 use App\Models\Client;
 use App\Models\Project;
 use App\Services\Project\ProjectService;
@@ -39,7 +40,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUpdateProjectRequest $request)
     {
         $data = $request->all();
         $data['orcamento'] = $this->sanitizeMoney($data['orcamento']);
@@ -77,7 +78,7 @@ class ProjectController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Project $project)
+    public function update(StoreUpdateProjectRequest $request, Project $project)
     {
         $data = $request->all();
         $data['orcamento'] = $this->sanitizeMoney($data['orcamento']);

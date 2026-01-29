@@ -1,3 +1,6 @@
+@php
+use App\Helpers\Functions;
+@endphp
 <x-layout title="Lista de funcionários">
     <div class="flex justify-end my-3">
         <a class="bg-green-500 border rounded-md p-1 px-3 text-white" href="{{route('employees.create')}}">Criar funcionário</a>
@@ -31,7 +34,7 @@
                         @endif
                     </th>
                     <td class="px-3 py-4">
-                        {{ $employee->cpf }}
+                        {{ Functions::formatarCpf($employee->cpf) }}
                     </td>
                     <td class="px-3 py-4">
                         {{ $employee->address?->formattedAddress ?? 'Endereço não informado' }}
