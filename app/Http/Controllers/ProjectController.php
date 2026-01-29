@@ -8,7 +8,9 @@ use App\Models\Project;
 use App\Services\Project\ProjectService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Contracts\View\Factory;
-use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Routing\Redirector;
+
 
 class ProjectController extends Controller
 {
@@ -40,7 +42,7 @@ class ProjectController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateProjectRequest $request)
+    public function store(StoreUpdateProjectRequest $request): RedirectResponse|Redirector
     {
         $data = $request->all();
         $data['orcamento'] = $this->sanitizeMoney($data['orcamento']);
@@ -60,25 +62,18 @@ class ProjectController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Project $project): View|Factory
     {
-        //
+        $clients = Client::all();
+        return view('projects.edit', compact('project', 'clients'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdateProjectRequest $request, Project $project)
+    public function update(StoreUpdateProjectRequest $request, Project $project): RedirectResponse|Redirector
     {
         $data = $request->all();
         $data['orcamento'] = $this->sanitizeMoney($data['orcamento']);
@@ -100,9 +95,19 @@ class ProjectController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Project $project): RedirectResponse|Redirector
     {
-        //
+        $result = $this->projectService->deleteProject($project);
+
+        if (!$result['ok']) {
+            return redirect()
+                ->back()
+                ->with('error', 'Erro ao atualizar projeto: ' . $result['message']);
+        }
+
+        return redirect()
+            ->route('projects.index')
+            ->with('success', 'Projeto excluido com sucesso!');
     }
 
     /**

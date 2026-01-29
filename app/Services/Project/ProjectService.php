@@ -34,4 +34,18 @@ class ProjectService
             return ['ok' => false, 'message' => $e->getMessage()];
         }
     }
+
+    public function deleteProject(Project $project): array
+    {
+        try {
+            DB::beginTransaction();
+            $project->delete();
+            DB::commit();
+
+            return ['ok' => true];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return ['ok' => false, 'message' => $e->getMessage()];
+        }
+    }
 }

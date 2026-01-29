@@ -22,7 +22,9 @@
             </div>
 
             <div class="md:col-span-2">
-                <x-input-text name="orcamento" label="Orçamento" :value="$project->orcamento ?? ''" type="text"
+                <x-input-text name="orcamento" label="Orçamento"
+                    :value="old('orcamento', isset($project) ? number_format((float) $project->orcamento, 2, ',', '.') : '')"
+                    type="text"
                     data-mask="money" />
             </div>
 
